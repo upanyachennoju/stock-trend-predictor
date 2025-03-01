@@ -15,10 +15,16 @@ MODEL_PATH = "stock_predictor_model.h5"
 
 @st.cache_resource
 def load_trained_model():
-    if os.path.exists(MODEL_PATH):
-        return load_model(MODEL_PATH)
-    else:
-        st.warning("⚠️ Model not found! Training a new model...")
+    if not os.path.exists(MODEL_PATH):
+        st.warning("⚠️ Model file not found! Training a new model...")
+        return train_and_save_model()
+
+    try:
+        model = load_model(MODEL_PATH)
+        st.success("✅ Model loaded successfully!")
+        return model
+    except OSError:
+        st.error("🚨 Error loading model! The file may be corrupted. Re-training...")
         return train_and_save_model()
 
 def train_and_save_model():
