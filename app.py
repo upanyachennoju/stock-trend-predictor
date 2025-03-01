@@ -67,13 +67,16 @@ def get_sentiment(stock_symbol):
 
 # Preprocess Data
 def preprocess_data(data, time_step=60):
+    if len(data) < time_step:
+        st.error(f"⚠️ Not enough data available! At least {time_step} records are needed.")
+        return None, None
+
     scaler = MinMaxScaler(feature_range=(0,1))
     data_scaled = scaler.fit_transform(data)
-    X, y = [], []
-    for i in range(len(data_scaled) - time_step):
-        X.append(data_scaled[i:i+time_step])
-        y.append(data_scaled[i+time_step][0])
-    return np.array(X), np.array(y), scaler
+
+    X = np.array([data_scaled[i:i+time_step] for i in range(len(data_scaled) - time_step)])
+    return X, scaler
+
 
 # Predict Future Prices
 def predict_future(model, data, scaler, days=7):
