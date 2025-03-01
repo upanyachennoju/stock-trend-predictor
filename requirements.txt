@@ -2,8 +2,8 @@ streamlit
 numpy
 pandas
 matplotlib
-seaborn
 tensorflow
 scikit-learn
 yfinance
 vaderSentiment
+requests
