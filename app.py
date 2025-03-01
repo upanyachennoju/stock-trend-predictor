@@ -8,11 +8,19 @@ from tensorflow.keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
 import requests
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+import os
+import tensorflow as tf
 
-# Load Pre-Trained Model
 @st.cache_resource
 def load_trained_model():
-    return load_model("stock_predictor_model.h5")
+    model_path = "stock_predictor_model.h5"
+    
+    if not os.path.exists(model_path):
+        st.error("⚠️ Model file not found! Please upload 'stock_predictor_model.h5' to your app directory.")
+        return None
+    
+    return tf.keras.models.load_model(model_path)
+
 
 # Load Stock Data
 def load_data(stock_symbol, start, end):
