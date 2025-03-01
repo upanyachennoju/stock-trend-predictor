@@ -6,3 +6,4 @@ seaborn
 tensorflow
 scikit-learn
 yfinance
+vaderSentiment
